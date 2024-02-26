@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package marketplace.external.analytics.category;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "base.proto";
+
+option java_multiple_files = true;
+option java_outer_classname = "ExternalCategoryAnalyticsProto";
+option java_package = "dev.crashteam.mp.external.analytics.category";
+
+message CategoryChildrenId {
+  int64 children_id = 1;
+}
+
+message Category {
+  int64 category_id = 1;
+  string name = 2;
+  optional int64 parent_id = 3;
+  repeated CategoryChildrenId children_ids = 4;
+}
+
+message CategoryAnalyticsDifference {
+  int32 revenue_percentage = 1;
+  int32 revenue_per_product_percentage = 2;
+  int32 sales_count_percentage = 3;
+  int32 product_count_percentage = 4;
+  int32 average_bill_percentage = 5;
+  int32 seller_count_percentage = 6;
+  int32 tsts_percentage = 7;
+  int32 tstc_percentage = 8;
+}
+
+message CategoryAnalytics {
+  marketplace.analytics.base.Money revenue = 1;
+  marketplace.analytics.base.Money revenue_per_product = 2;
+  int64 sales_count = 3;
+  int64 product_count = 4;
+  marketplace.analytics.base.Money average_bill = 5;
+  int64 seller_count = 6;
+  double tsts = 7;
+  double tstc = 8;
+}
+
+message CategoryAnalyticsInfo {
+  Category category = 1;
+  CategoryAnalytics category_analytics = 2;
+  optional CategoryAnalytics previous_period_analytics = 3;
+  optional CategoryAnalyticsDifference category_analytics_difference = 4;
+}
+
+message GetCategoryAnalyticsRequest {
+  optional int64 categoryId = 1;
+  marketplace.analytics.base.DateRange date_range = 2;
+  marketplace.analytics.base.Sort sort = 3;
+  optional bool calculate_differance = 4;
+}
+
+message CategoryDailyAnalyticsInfo {
+  marketplace.analytics.base.Date date = 1;
+  marketplace.analytics.base.Money revenue = 2;
+  marketplace.analytics.base.Money average_bill = 3;
+  int64 sales_count = 4;
+  int64 available_count = 5;
+}
+
+message GetCategoryAnalyticsResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    repeated CategoryAnalyticsInfo categories = 1;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNSPECIFIED = 0;
+      ERROR_CODE_NOT_FOUND = 1;
+      ERROR_CODE_BAD_REQUEST = 2;
+      ERROR_CODE_UNEXPECTED = 3;
+    }
+  }
+}
+
+message GetCategoryDailyAnalyticsRequest {
+  int64 categoryId = 1;
+  marketplace.analytics.base.DateRange date_range = 2;
+}
+
+message GetCategoryDailyAnalyticsResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    repeated CategoryDailyAnalyticsInfo category_daily_analytics_info = 1;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNSPECIFIED = 0;
+      ERROR_CODE_NOT_FOUND = 1;
+      ERROR_CODE_BAD_REQUEST = 2;
+      ERROR_CODE_UNEXPECTED = 3;
+    }
+  }
+}
+
+service ExternalCategoryAnalyticsService {
+  rpc getCategoryAnalytics(GetCategoryAnalyticsRequest) returns (GetCategoryAnalyticsResponse);
+  rpc getCategoryDailyAnalytics(GetCategoryDailyAnalyticsRequest) returns (GetCategoryDailyAnalyticsResponse);
+}
