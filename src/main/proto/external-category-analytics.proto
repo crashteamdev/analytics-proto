@@ -22,14 +22,14 @@ message Category {
 }
 
 message CategoryAnalyticsDifference {
-  int32 revenue_percentage = 1;
-  int32 revenue_per_product_percentage = 2;
-  int32 sales_count_percentage = 3;
-  int32 product_count_percentage = 4;
-  int32 average_bill_percentage = 5;
-  int32 seller_count_percentage = 6;
-  int32 tsts_percentage = 7;
-  int32 tstc_percentage = 8;
+  double revenue_percentage = 1;
+  double revenue_per_product_percentage = 2;
+  double sales_count_percentage = 3;
+  double product_count_percentage = 4;
+  double average_bill_percentage = 5;
+  double seller_count_percentage = 6;
+  double tsts_percentage = 7;
+  double tstc_percentage = 8;
 }
 
 message CategoryAnalytics {
