@@ -48,6 +48,7 @@ message DateRange {
 
 message Sort {
   string field_name = 1;
+  SortOrder order = 2;
   enum SortOrder {
     SORT_ORDER_UNSPECIFIED = 0;
     SORT_ORDER_ASC = 1;
