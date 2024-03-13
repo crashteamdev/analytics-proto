@@ -50,19 +50,62 @@ message CategoryAnalyticsInfo {
   optional CategoryAnalyticsDifference category_analytics_difference = 4;
 }
 
-message GetCategoryAnalyticsRequest {
-  optional int64 categoryId = 1;
-  marketplace.analytics.base.DateRange date_range = 2;
-  repeated marketplace.analytics.base.Sort sort = 3;
-  optional bool calculate_differance = 4;
-}
-
 message CategoryDailyAnalyticsInfo {
   marketplace.analytics.base.Date date = 1;
   marketplace.analytics.base.Money revenue = 2;
   marketplace.analytics.base.Money average_bill = 3;
   int64 sales_count = 4;
   int64 available_count = 5;
+}
+
+message CategoryProductAnalytics {
+  repeated ProductAnalytics product_analytics = 1;
+}
+
+message ProductAnalytics {
+  string product_id = 1;
+  string name = 2;
+  string image_url = 3;
+  marketplace.analytics.base.Money revenue = 4;
+  int64 sales_count = 5;
+  marketplace.analytics.base.Money price = 6;
+  int64 available_count = 7;
+  double rating = 8;
+  int64 reviews_count = 9;
+  repeated int64 sales_chart = 10;
+}
+
+message ProductDailyAnalytics {
+  string product_id = 1;
+  string name = 2;
+  string image_url = 3;
+  ProductCategory category = 4;
+  ProductSeller seller = 5;
+  marketplace.analytics.base.Date appear_at = 6;
+  marketplace.analytics.base.Money price = 7;
+  marketplace.analytics.base.Money full_price = 8;
+  marketplace.analytics.base.Money revenue = 9;
+  int64 reviews_count = 10;
+  repeated marketplace.analytics.base.Money price_chart = 11;
+  repeated marketplace.analytics.base.Money revenue_chart = 12;
+  repeated int64 sales_chart = 13;
+  repeated int64 available_count_chart = 14;
+}
+
+message ProductCategory {
+  string category_id = 1;
+  string category_name = 2;
+}
+
+message ProductSeller {
+  string seller_link = 1;
+  string seller_title = 2;
+}
+
+message GetCategoryAnalyticsRequest {
+  optional int64 categoryId = 1;
+  marketplace.analytics.base.DateRange date_range = 2;
+  repeated marketplace.analytics.base.Sort sort = 3;
 }
 
 message GetCategoryAnalyticsResponse {
@@ -116,7 +159,69 @@ message GetCategoryDailyAnalyticsResponse {
   }
 }
 
+message GetCategoryAnalyticsProductsRequest {
+  int64 categoryId = 1;
+  marketplace.analytics.base.DateRange date_range = 2;
+  marketplace.analytics.base.Filter filter = 3;
+  repeated marketplace.analytics.base.Sort sort = 4;
+  marketplace.analytics.base.LimitOffsetPagination pagination = 5;
+}
+
+message GetCategoryAnalyticsProductResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    CategoryProductAnalytics category_product_analytics = 1;
+    marketplace.analytics.base.LimitOffsetPaginationResult pagination = 2;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNSPECIFIED = 0;
+      ERROR_CODE_NOT_FOUND = 1;
+      ERROR_CODE_BAD_REQUEST = 2;
+      ERROR_CODE_UNEXPECTED = 3;
+    }
+  }
+}
+
+message GetProductDailyAnalyticsRequest {
+  int64 product_id = 1;
+  marketplace.analytics.base.DateRange date_range = 2;
+}
+
+message GetProductDailyAnalyticsResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    ProductDailyAnalytics product_daily_analytics = 1;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNSPECIFIED = 0;
+      ERROR_CODE_NOT_FOUND = 1;
+      ERROR_CODE_BAD_REQUEST = 2;
+      ERROR_CODE_UNEXPECTED = 3;
+    }
+  }
+}
+
 service ExternalCategoryAnalyticsService {
   rpc getCategoryAnalytics(GetCategoryAnalyticsRequest) returns (GetCategoryAnalyticsResponse);
   rpc getCategoryDailyAnalytics(GetCategoryDailyAnalyticsRequest) returns (GetCategoryDailyAnalyticsResponse);
+  rpc getCategoryAnalyticsProducts(GetCategoryAnalyticsProductsRequest) returns (GetCategoryAnalyticsProductResponse);
+  rpc getProductDailyAnalytics(GetProductDailyAnalyticsRequest) returns (GetProductDailyAnalyticsResponse);
 }

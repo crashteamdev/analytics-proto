@@ -55,3 +55,45 @@ message Sort {
     SORT_ORDER_DESC = 2;
   }
 }
+
+message Filter {
+  string field_name = 1;
+  FilterCondition condition = 2;
+}
+
+message FilterCondition {
+  oneof condition {
+    EqualsTextCondition equals_text_condition = 1;
+    EqualsValueCondition equals_value_condition = 2;
+    FilterBetweenCondition filter_between_condition = 3;
+    FilterBetweenDateCondition filter_between_date_condition = 4;
+  }
+}
+
+message EqualsTextCondition {
+  string text = 1;
+}
+
+message EqualsValueCondition {
+  string value = 2;
+}
+
+message FilterBetweenCondition {
+  int64 left = 1;
+  int64 right = 2;
+}
+
+message FilterBetweenDateCondition {
+  DateRange date_range_condition = 1;
+}
+
+message LimitOffsetPagination {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message LimitOffsetPaginationResult {
+  int64 limit = 1;
+  int64 offset = 2;
+  int64 totalOffset = 3;
+}
