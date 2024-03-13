@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>analytics-proto</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
