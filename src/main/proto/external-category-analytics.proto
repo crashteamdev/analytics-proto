@@ -65,7 +65,7 @@ message CategoryProductAnalytics {
 message ProductAnalytics {
   string product_id = 1;
   string name = 2;
-  string image_url = 3;
+  string photo_key = 3;
   marketplace.analytics.base.Money revenue = 4;
   int64 sales_count = 5;
   marketplace.analytics.base.Money price = 6;
