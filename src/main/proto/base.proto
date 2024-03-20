@@ -41,6 +41,14 @@ message Date {
   int32 day = 3;
 }
 
+enum DatePeriod {
+  DATE_PERIOD_UNSPECIFIED = 0;
+  DATE_PERIOD_WEEK = 1;
+  DATE_PERIOD_TWO_WEEK = 2;
+  DATE_PERIOD_MONTH = 3;
+  DATE_PERIOD_TWO_MONTH = 4;
+}
+
 message DateRange {
   Date fromDate = 1;
   Date toDate = 2;

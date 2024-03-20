@@ -161,7 +161,7 @@ message GetCategoryDailyAnalyticsResponse {
 
 message GetCategoryAnalyticsProductsRequest {
   int64 categoryId = 1;
-  marketplace.analytics.base.DateRange date_range = 2;
+  marketplace.analytics.base.DatePeriod date_period = 2;
   repeated marketplace.analytics.base.Filter filter = 3;
   repeated marketplace.analytics.base.Sort sort = 4;
   marketplace.analytics.base.LimitOffsetPagination pagination = 5;
