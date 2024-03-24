@@ -78,7 +78,7 @@ message ProductAnalytics {
 message ProductDailyAnalytics {
   string product_id = 1;
   string name = 2;
-  string image_url = 3;
+  string photo_key = 3;
   ProductCategory category = 4;
   ProductSeller seller = 5;
   marketplace.analytics.base.Date appear_at = 6;
