@@ -90,6 +90,7 @@ message ProductDailyAnalytics {
   repeated marketplace.analytics.base.Money revenue_chart = 12;
   repeated int64 sales_chart = 13;
   repeated int64 available_count_chart = 14;
+  double rating = 15;
 }
 
 message ProductCategory {
