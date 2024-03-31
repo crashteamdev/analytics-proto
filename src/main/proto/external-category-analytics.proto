@@ -103,6 +103,13 @@ message ProductSeller {
   string seller_title = 2;
 }
 
+message CategoryInfo {
+  string category_id = 1;
+  string parent_id = 2;
+  string name = 3;
+  string children_ids = 4;
+}
+
 message GetCategoryAnalyticsRequest {
   string user_id = 4;
   optional int64 categoryId = 1;
@@ -228,9 +235,38 @@ message GetProductDailyAnalyticsResponse {
   }
 }
 
+message GetCategoryDataRequest {
+  string category_id = 1;
+}
+
+message GetCategoryDataResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    CategoryInfo category_info = 1;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNSPECIFIED = 0;
+      ERROR_CODE_NOT_FOUND = 1;
+      ERROR_CODE_BAD_REQUEST = 2;
+      ERROR_CODE_UNEXPECTED = 3;
+      ERROR_CODE_FORBIDDEN = 4;
+    }
+  }
+}
+
 service ExternalCategoryAnalyticsService {
   rpc getCategoryAnalytics(GetCategoryAnalyticsRequest) returns (GetCategoryAnalyticsResponse);
   rpc getCategoryDailyAnalytics(GetCategoryDailyAnalyticsRequest) returns (GetCategoryDailyAnalyticsResponse);
   rpc getCategoryAnalyticsProducts(GetCategoryAnalyticsProductsRequest) returns (GetCategoryAnalyticsProductResponse);
   rpc getProductDailyAnalytics(GetProductDailyAnalyticsRequest) returns (GetProductDailyAnalyticsResponse);
+  rpc getCategory(GetCategoryDataRequest) returns (GetCategoryDataResponse);
 }
