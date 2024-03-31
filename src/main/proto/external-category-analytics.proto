@@ -107,7 +107,7 @@ message CategoryInfo {
   string category_id = 1;
   string parent_id = 2;
   string name = 3;
-  string children_ids = 4;
+  repeated string children_ids = 4;
 }
 
 message GetCategoryAnalyticsRequest {
