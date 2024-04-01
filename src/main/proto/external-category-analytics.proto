@@ -113,7 +113,7 @@ message CategoryInfo {
 message GetCategoryAnalyticsRequest {
   string user_id = 4;
   optional int64 categoryId = 1;
-  marketplace.analytics.base.DateRange date_range = 2;
+  marketplace.analytics.base.DatePeriod date_period = 2;
   repeated marketplace.analytics.base.Sort sort = 3;
 }
 
