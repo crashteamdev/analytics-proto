@@ -83,7 +83,7 @@ message ProductDailyAnalytics {
   ProductSeller seller = 5;
   marketplace.analytics.base.Date appear_at = 6;
   marketplace.analytics.base.Money price = 7;
-  marketplace.analytics.base.Money full_price = 8;
+  optional marketplace.analytics.base.Money full_price = 8;
   marketplace.analytics.base.Money revenue = 9;
   int64 reviews_count = 10;
   repeated marketplace.analytics.base.Money price_chart = 11;
