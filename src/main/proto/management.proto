@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package marketplace.external.analytics.management;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "base.proto";
+
+option java_multiple_files = true;
+option java_outer_classname = "ExternalAnalyticsManagementProto";
+option java_package = "dev.crashteam.mp.external.analytics.management";
+
+message GiveSubscriptionRequest {
+  string user_id = 1;
+  string subscription_id = 2;
+  int32 day_count = 3;
+}
+
+message GiveSubscriptionResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNSPECIFIED = 0;
+      ERROR_CODE_USER_NOT_FOUND = 1;
+      ERROR_CODE_SUBSCRIPTION_NOT_FOUND = 2;
+      ERROR_CODE_SUBSCRIPTION_CONFLICT = 3;
+      ERROR_CODE_BAD_REQUEST = 4;
+      ERROR_CODE_UNEXPECTED = 5;
+      ERROR_CODE_FORBIDDEN = 6;
+    }
+  }
+}
+
+service ExternalCategoryAnalyticsService {
+  rpc giveSubscription(GiveSubscriptionRequest) returns (GiveSubscriptionResponse);
+}
