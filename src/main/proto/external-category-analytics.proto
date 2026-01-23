@@ -264,10 +264,46 @@ message GetCategoryDataResponse {
   }
 }
 
+message TrendingProduct {
+  string product_id = 1;
+  string name = 2;
+  string photo_key = 3;
+}
+
+message GetTrendingCategoryProductsRequest {
+  int64 category_id = 1;
+  string user_id = 2;
+}
+
+message GetTrendingCategoryProductsResponse {
+  oneof response {
+    SuccessResponse success_response = 1;
+    ErrorResponse error_response = 2;
+  }
+
+  message SuccessResponse {
+    repeated TrendingProduct trending_products = 1;
+  }
+
+  message ErrorResponse {
+    ErrorCode errorCode = 1;
+    optional string description = 2;
+
+    enum ErrorCode {
+      ERROR_CODE_UNSPECIFIED = 0;
+      ERROR_CODE_NOT_FOUND = 1;
+      ERROR_CODE_BAD_REQUEST = 2;
+      ERROR_CODE_UNEXPECTED = 3;
+      ERROR_CODE_FORBIDDEN = 4;
+    }
+  }
+}
+
 service ExternalCategoryAnalyticsService {
   rpc getCategoryAnalytics(GetCategoryAnalyticsRequest) returns (GetCategoryAnalyticsResponse);
   rpc getCategoryDailyAnalytics(GetCategoryDailyAnalyticsRequest) returns (GetCategoryDailyAnalyticsResponse);
   rpc getCategoryAnalyticsProducts(GetCategoryAnalyticsProductsRequest) returns (GetCategoryAnalyticsProductResponse);
   rpc getProductDailyAnalytics(GetProductDailyAnalyticsRequest) returns (GetProductDailyAnalyticsResponse);
   rpc getCategory(GetCategoryDataRequest) returns (GetCategoryDataResponse);
+  rpc getTrendingCategoryProducts(GetTrendingCategoryProductsRequest) returns (GetTrendingCategoryProductsResponse);
 }
